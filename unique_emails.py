@@ -1,16 +1,11 @@
-import sqlite3
-conn = sqlite3.connect('data.db')
-c = conn.cursor()
 
-def Unique_emails_checking(emails,email):
-    unique_email = set()
-    for x in emails:
-        # spliting the local & domain name
-        local_name, domain_name = x.split('@')
-
-
+def check_uniqueness(emails,email):
+    local_name, domain_name = email.split('@')
+    if domain_name != 'gmail.com':
+        return False
+    if email in emails:
+        return False
+    else:
+        return True
 
 
-
-
-    return True
