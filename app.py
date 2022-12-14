@@ -92,35 +92,39 @@ def main():
                 # def clear_form():
                 #     st.session_state["foo"] = ""
                 #     st.session_state["bar"] = ""
-                placeholder_3=st.empty()
-                placeholder_4=st.empty()
-                address=placeholder_3.text_input('Email_Address',value='')
-                message=placeholder_4.text_input('Type your message',value='')
-                submit_button=st.button(label='Send Mail',key=3)
+                # placeholder_3=st.empty()
+                # placeholder_4=st.empty()
+                # address=placeholder_3.text_input('Email_Address',value='')
+                # message=placeholder_4.text_input('Type your message',value='')
+                # submit_button=st.button(label='Send Mail',key=3)
+                with st.form(key='my_form', clear_on_submit=True):
+                    address=st.text_input('Email_Address', value="")
+                    message=st.text_input('Type your messages',value='')
+                    submit = st.form_submit_button(label='Send')
 
-
-                if submit_button:
-                    all_emails=call_all_emails()
-                    if len(address)>0 and address in all_emails:
-                        local_name, _ = address.split('@')
-                        class_names = {'primary': 1, 'promotion': 2, 'forum': 3, 'social': 4}
-                        json_file = open('model.json', 'r')
-                        loaded_model_json = json_file.read()
-                        json_file.close()
-                        loaded_model = model_from_json(loaded_model_json)
-                        loaded_model.load_weights("model.h5")
-                        with open('tokenizer.pickle', 'rb') as handle:
-                            vec = pickle.load(handle)
-                        category = predictions(loaded_model, message, vec, class_names)
-                        add_msg(message,category,emailaddress,local_name)
-                        st.write('Send Your Message to {}'.format(address))
+                all_emails = call_all_emails()
+                Emails_Send=False
+                if submit and len(address)>0 and address in all_emails:
+                    local_name, _ = address.split('@')
+                    class_names = {'primary': 1, 'promotion': 2, 'forum': 3, 'social': 4}
+                    json_file = open('model.json', 'r')
+                    loaded_model_json = json_file.read()
+                    json_file.close()
+                    loaded_model = model_from_json(loaded_model_json)
+                    loaded_model.load_weights("model.h5")
+                    with open('tokenizer.pickle', 'rb') as handle:
+                        vec = pickle.load(handle)
+                    category = predictions(loaded_model, message, vec, class_names)
+                    add_msg(message,category,emailaddress,local_name)
+                    st.write('Send Your Message to {}'.format(address))
+                    Emails_Send=True
                         # placeholder_3.empty()
                         # placeholder_4.empty()
                         # address=placeholder_3.text_input('Email_Address',value='')
                         # message=placeholder_4.text_input('Type your message',value='')
                         # st.session_state['bar'] = ''
-                    else:
-                        st.error('Invalid email address')
+                if submit and Emails_Send==False:
+                    st.error('Invalid email address')
                 st.header('Your Messages')
                 message_box(emailaddress)
                 reset = st.button('Logout', on_click=reset_button)
