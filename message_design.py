@@ -3,7 +3,7 @@ import streamlit as st
 import sqlite3
 conn = sqlite3.connect('data.db')
 c = conn.cursor()
-
+st.set_page_config(layout="centered")
 def all_messages(tablename,category):
     c.execute('SELECT message,Sender FROM {} WHERE category=? '.format(tablename), (category,))
     data = c.fetchall()
@@ -21,44 +21,48 @@ def message_box(address):
         ('Primary', 'Social', 'Promotion', 'Forum'))
     if option == 'Primary':  # on_click=callback) or st.session_state.button_clicked):
         messages, senders = all_messages(local_name, 'primary')
-        col1, col2 = st.columns(2)
+
+
         for x, y in zip(messages, senders):
-            with col1:
-                st.subheader('Messages')
-                st.write(x)
-            with col2:
-                st.subheader('Senders')
-                st.write(y)
+            # with col1(use_column_width=True):
+            #     st.subheader('Messages')
+            #     st.write(x)
+            with st.container():
+                col1, col2 = st.columns([2, .5])
+                col1.subheader('Messages')
+                col1.write(x)
+                col2.subheader('Senders')
+                col2.write(y)
+            # with col2(use_column_width=True):
+            #     st.subheader('Senders')
+            #     st.write(y)
     elif option == 'Social':
         # st.stop() # on_click=callback) or st.session_state.button_clicked):
         messages, senders = all_messages(local_name, 'social')
-        col1, col2 = st.columns(2)
         for x, y in zip(messages, senders):
             # print(x[0])
             # print(y[0])
-            with col1:
-                st.subheader('Messages')
-                st.write(x)
-            with col2:
-                st.subheader('Senders')
-                st.write(y)
+            with st.container():
+                col1, col2 = st.columns([2, .5])
+                col1.subheader('Messages')
+                col1.write(x)
+                col2.subheader('Senders')
+                col2.write(y)
     elif option=='Promotion':
         messages, senders = all_messages(local_name, 'promotion')
-        col1, col2 = st.columns(2)
         for x, y in zip(messages, senders):
-            with col1:
-                st.subheader('Messages')
-                st.write(x)
-            with col2:
-                st.subheader('Senders')
-                st.write(y)
+            with st.container():
+                col1, col2 = st.columns([2, .5])
+                col1.subheader('Messages')
+                col1.write(x)
+                col2.subheader('Senders')
+                col2.write(y)
     elif option== 'Forum':
         messages, senders = all_messages(local_name, 'forum')
-        col1, col2 = st.columns(2)
         for x, y in zip(messages, senders):
-            with col1:
-                st.subheader('Messages')
-                st.write(x)
-            with col2:
-                st.subheader('Senders')
-                st.write(y)
+            with st.container():
+                col1, col2 = st.columns([2, .5])
+                col1.subheader('Messages')
+                col1.write(x)
+                col2.subheader('Senders')
+                col2.write(y)
