@@ -3,4 +3,5 @@ numpy>=1.18.5
 tensorflow==2.0.0
 h5py==2.10.0
 scikit-learn==1.0.2
-streamlit
+sqlite==3.40.0
+streamlit==1.15.2
